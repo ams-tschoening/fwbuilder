@@ -1,3 +1,0 @@
-[submodule "release/install-root"]
-	path = release/install-root
-	url = https://github.com/fwbuilder/w32-bin.git
