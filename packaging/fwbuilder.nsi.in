@@ -40,7 +40,7 @@ Function GetWindowsVersion
   StrCmp $0 "" 0 lbl_winnt
   ; we are not NT.
   ReadRegStr $0 HKLM SOFTWARE\Microsoft\Windows\CurrentVersion VersionNumber
- 
+
   StrCpy $9 $0 1
   StrCmp $9 '4' 0 lbl_error
 
@@ -61,7 +61,7 @@ Function GetWindowsVersion
     StrCpy $0 'ME'
   Goto lbl_done
 
-  lbl_winnt: 
+  lbl_winnt:
 
     StrCpy $9 $0 1
     StrCmp $9 '3' lbl_winnt_x
@@ -121,7 +121,7 @@ $\n\
 Click Yes to open the survey in your web browser, click No to exit the \
 uninstaller." IDNO +2
 
-  ExecShell open "http://www.fwbuilder.org/uninstall_survey.html" 
+  ExecShell open "http://www.fwbuilder.org/uninstall_survey.html"
 
 ;  MessageBox MB_ICONSTOP "Continuing uninstaller"
 
@@ -170,7 +170,7 @@ FunctionEnd
 
   ;Start Menu Folder Page Configuration
   !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKLM"
-  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\NetCitadel\${APPNAME}" 
+  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\NetCitadel\${APPNAME}"
   !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
 
   LicenseText "GNU GENERAL PUBLIC LICENSE"
@@ -259,31 +259,31 @@ Section "FWBuilder (required)"
 
 ; Install Qt and its dependencies
 
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Core.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Gui.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Network.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5PrintSupport.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Widgets.dll"
-  File /r "/usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/platforms"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libbz2.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libgcc_s_sjlj-1.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libglib-2.0-0.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libharfbuzz-0.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libiconv-2.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libintl-8.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libpcre-1.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libpcre16-0.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libpcre2-16-0.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libpng16-16.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libstdc++-6.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libwinpthread-1.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libxml2-2.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libxslt-1.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libssl-1_1.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/zlib1.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libcrypto-1_1.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libfreetype-6.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/liblzma-5.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Core.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Gui.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Network.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5PrintSupport.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Widgets.dll"
+  File /r "/opt/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/platforms"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libbz2.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libgcc_s_sjlj-1.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libglib-2.0-0.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libharfbuzz-0.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libiconv-2.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libintl-8.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libpcre-1.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libpcre16-0.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libpcre2-16-0.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libpng16-16.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libstdc++-6.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libwinpthread-1.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libxml2-2.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libxslt-1.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libssl-1_1.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/zlib1.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libcrypto-1_1.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libfreetype-6.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/liblzma-5.dll"
 
 ; Install RCS for these files
 ;
@@ -328,7 +328,7 @@ Section "FWBuilder (required)"
 ; ========================================================================
 ; Configure installer to use our prepackaged plink.exe and pscp.exe but only if it was not configured before
 ;
-; ******** THESE KEYS MUST MATCH THOSE USED BY the class FWBSettings 
+; ******** THESE KEYS MUST MATCH THOSE USED BY the class FWBSettings
 ;
   ReadRegStr $0 HKCU "Software\netcitadel.com\${APPNAME}\${GENERATION}\SSH" "SSHPath"
   StrCmp $0 "" 0 +3
