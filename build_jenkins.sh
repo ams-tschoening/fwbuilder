@@ -9,4 +9,3 @@ LNK_FNAME=fwbuilder-*.exe
 
 ./build_mxe-w32.sh all
 find "${LNK_SRC}" -name "${LNK_FNAME}" -exec ln --force -t "${LNK_DEST}" {} +
-
