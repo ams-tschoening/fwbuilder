@@ -35,6 +35,7 @@
 #include "instDialog.h"
 #include "FirewallInstaller.h"
 #include "FWBSettings.h"
+#include "FWBSettings_config.h"
 #include "FWWindow.h"
 #include "InstallFirewallViewItem.h"
 #include "instOptionsDialog.h"
@@ -132,7 +133,7 @@ QTreeWidgetItem* instDialog::createTreeItem(QTreeWidgetItem* parent,
 
     QString icn_filename = (":/Icons/" + fw->getTypeName() + "/icon").c_str();
     QPixmap pm;
-    if ( ! QPixmapCache::find(icn_filename, pm))
+    if ( ! QPixmapCache::find(icn_filename, &pm))
     {
         pm.load(icn_filename);
         QPixmapCache::insert(icn_filename, pm);

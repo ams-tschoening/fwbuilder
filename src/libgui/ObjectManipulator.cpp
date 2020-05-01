@@ -134,6 +134,7 @@ ObjectManipulator::ObjectManipulator(QWidget *parent):
     popup_menu = nullptr;
 
 //    buildNewObjectMenu();
+    lastClickedItem = nullptr;
 
 }
 
@@ -388,7 +389,7 @@ static void addKeywordsMenu(ObjectManipulator *om, QMenu *menu)
         removeKeywords->setDisabled(true);
     } else {
         data[0] = "remove";
-        foreach (QString str, sortStrings(toRemove.toList())) {
+        foreach (QString str, sortStrings(toRemove.values())) {
             QAction *act =
                 removeKeywords->addAction(str, om, SLOT(processKeywordSlot()));
             data[1] = str;
@@ -415,6 +416,7 @@ void ObjectManipulator::addSubfolderActions(QList<QAction*> &AddObjectActions, F
 
     //Do not allow to create subfolders on real objects
     if(item==nullptr && (currentObj!=nullptr
+                      &&!Library::isA(currentObj)
                       &&!Firewall::isA(currentObj)
                       &&!Cluster::isA(currentObj)
                       &&!IPv4::isA(currentObj)
@@ -581,12 +583,19 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     FWObject *obj = otvi->getFWObject();
     if (obj == nullptr) {
         assert(otvi->getUserFolderParent() != nullptr);
-        QAction *action =
+        QAction *removeUserFolderAction =
             popup_menu->addAction(tr("Delete"), this, SLOT(removeUserFolder()));
+
+        QAction *renameUserFolderAction =
+            popup_menu->addAction(tr("Rename"), this, SLOT(renameUserFolder()));
+
         /* The user-defined folder doesn't get counted as a selected obj */
         if (objTreeView->getNumSelected() > 0) {
-            action->setEnabled(false);
+            removeUserFolderAction->setEnabled(false);
+            renameUserFolderAction->setEnabled(false);
         }
+
+
 
         addSubfolderActions(AddObjectActions, nullptr, otvi, addSubfolder);
 
@@ -1194,7 +1203,7 @@ void ObjectManipulator::filterFirewallsFromSelection(vector<FWObject*> &so,
                 QMessageBox::warning(this, "Firewall Builder",
                         QObject::tr("No firewalls assigned to cluster '%1'").
                                      arg(cl->getName().c_str()),
-                        "&Continue", QString::null, QString::null, 0, 1 );
+                        "&Continue", QString(), QString(), 0, 1 );
                 continue;
             }
             fo.insert(cl);
@@ -1244,7 +1253,7 @@ FWObject* ObjectManipulator::prepareForInsertion(FWObject *target, FWObject *obj
         QMessageBox::critical(
             this,"Firewall Builder",
             err,
-            "&Continue", QString::null, QString::null,
+            "&Continue", QString(), QString(),
             0, 1 );
 
         return nullptr;
@@ -1829,4 +1838,3 @@ list<Firewall*> ObjectManipulator::findFirewallsForObject(FWObject *o)
 {
     return UsageResolver().findFirewallsForObject(o, this->m_project->db());
 }
-

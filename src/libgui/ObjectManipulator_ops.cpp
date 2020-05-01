@@ -415,7 +415,7 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
         QMessageBox::warning(
             this,"Firewall Builder",
             ex.toString().c_str(),
-            "&Continue", QString::null,QString::null,
+            "&Continue", QString(),QString(),
             0, 1 );
     }
 
@@ -592,7 +592,7 @@ void ObjectManipulator::deleteObject(FWObject *obj, QUndoCommand* macro)
         QMessageBox::warning(
             this,"Firewall Builder",
             ex.toString().c_str(),
-            "&Continue", QString::null,QString::null,
+            "&Continue", QString(),QString(),
             0, 1 );
         throw(ex);
     }
@@ -766,7 +766,7 @@ void ObjectManipulator::addSubfolderSlot()
     if (folder.contains(',')) {
         QMessageBox::warning(this, "Firewall Builder",
                              tr("Subfolder cannot contain a comma"), "&OK",
-                             QString::null, QString::null, 0, 1);
+                             QString(), QString(), 0, 1);
         return;
     }
 
@@ -845,6 +845,69 @@ void ObjectManipulator::removeUserFolder()
     set<string> folders = stringToSet(newObj->getStr("subfolders"));
     folders.erase(item->getUserFolderName().toUtf8().constData());
     newObj->setStr("subfolders", setToString(folders));
+
+    m_project->undoStack->push(macro);
+}
+
+void ObjectManipulator::renameUserFolder()
+{
+    ObjectTreeViewItem *item = dynamic_cast<ObjectTreeViewItem *>(getCurrentObjectTree()->currentItem());
+
+    if (item == nullptr || item->getUserFolderParent() == nullptr) return;
+
+    ObjectTreeViewItem *parent = dynamic_cast<ObjectTreeViewItem *>(item->parent());
+    assert(parent != nullptr);
+
+    QString oldFolderName = item->getUserFolderName();
+    QString newFolderName = QInputDialog::getText(nullptr, tr("Rename Subfolder"),
+                                                  tr("Enter new name for subfolder"),
+                                                  QLineEdit::Normal,
+                                                  oldFolderName);
+
+    if (newFolderName == oldFolderName) return;
+
+    newFolderName = newFolderName.simplified();
+    if (newFolderName.isEmpty()) return;
+    if (newFolderName.contains(',')) {
+        QMessageBox::warning(this, "Firewall Builder",
+                             tr("Subfolder cannot contain a comma"), "&OK",
+                             QString(), QString(), 0, 1);
+        return;
+    }
+
+    FWObject *obj = parent->getFWObject();
+    assert(obj != nullptr);
+
+    FWCmdMacro *macro = new FWCmdMacro("Rename subfolder");
+
+    set<string> subfolders = stringToSet(obj->getStr("subfolders"));
+    subfolders.insert(newFolderName.toStdString());
+
+    FWCmdAddUserFolder *addCmd = new FWCmdAddUserFolder(m_project, obj, newFolderName,
+                                                        "", macro);
+    FWObject *newObj = addCmd->getNewState();
+    newObj->setStr("subfolders", setToString(subfolders));
+
+    list<FWObject *>::const_iterator iter;
+    for (iter = obj->begin(); iter != obj->end(); ++iter) {
+        FWObject *childObj = *iter;
+
+        if (childObj->getStr("folder") != oldFolderName.toStdString()) continue;
+
+        FWCmdMoveToFromUserFolder *moveCmd = new FWCmdMoveToFromUserFolder(
+                    m_project, childObj->getParent(), childObj,
+                    oldFolderName.toStdString().c_str(), newFolderName.toStdString().c_str(),
+                    "", macro);
+        FWObject *newChild = moveCmd->getNewState();
+        newChild->setStr("folder", newFolderName.toStdString());
+    }
+
+    subfolders.erase(oldFolderName.toStdString());
+
+    FWCmdRemoveUserFolder *removeCmd = new FWCmdRemoveUserFolder(m_project, obj, oldFolderName,
+                                                                 "", macro);
+    newObj = removeCmd->getNewState();
+    newObj->setStr("subfolders", setToString(subfolders));
 
     m_project->undoStack->push(macro);
 }

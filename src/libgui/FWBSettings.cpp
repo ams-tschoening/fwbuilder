@@ -31,6 +31,7 @@
 #include "global.h"
 
 #include "FWBSettings.h"
+#include "FWBSettings_config.h"
 #include "FWWindow.h"
 #include "ObjectManipulator.h"
 
@@ -109,7 +110,7 @@ const char* iconsInRulesSize = SETTINGS_PATH_PREFIX "/UI/Icons/IconsInRulesSize"
 const char* rulesFont = SETTINGS_PATH_PREFIX "/UI/Fonts/RulesFont";
 const char* treeFont = SETTINGS_PATH_PREFIX "/UI/Fonts/TreeFont";
 const char* uiFont = SETTINGS_PATH_PREFIX "/UI/Fonts/UiFont";
-const char* compilerOutputFont = 
+const char* compilerOutputFont =
     SETTINGS_PATH_PREFIX "/UI/Fonts/CompilerOutputFont";
 const char* clipComment = SETTINGS_PATH_PREFIX "/UI/ClipComment";
 const char* checkUpdates = SETTINGS_PATH_PREFIX "/UI/CheckUpdates";
@@ -145,6 +146,8 @@ const char* SSHTimeout = SETTINGS_PATH_PREFIX "/SSH/SSHTimeout";
 
 const char * displayUnmodifiedRules = SETTINGS_PATH_PREFIX "/Diff/displayUnmodifiedRules";
 
+const QString FWBSettings::ApplicationName = QStringLiteral("FirewallBuilder");
+const QString FWBSettings::OrganizationName = QStringLiteral("firewallbuilder.org");
 
 /**
  * Settings path defined here should match Windows registry paths used
@@ -155,15 +158,15 @@ const char * displayUnmodifiedRules = SETTINGS_PATH_PREFIX "/Diff/displayUnmodif
  */
 FWBSettings::FWBSettings(bool testData) :
     QSettings(QSettings::UserScope,
-              "netcitadel.com",
-              testData?"fwb_test_data":getApplicationNameForSettings())
+              OrganizationName,
+              testData ? "fwb_test_data" : ApplicationName)
 {
     if (testData)
     {
         this->clear();
     }
     uuid_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope,
-                                  "netcitadel.com", "FirewallBuilder");
+                                  OrganizationName, ApplicationName);
 #ifdef _WIN32
     ssh_timeout_setings_object = new QSettings(QSettings::UserScope,
                                                  "SimonTatham", "PuTTY");
@@ -208,7 +211,7 @@ void FWBSettings::init(bool force_first_time_run)
         } else
         {
             ok = uuid_settings->contains(appGUID_4_0);
-            if (ok) 
+            if (ok)
             {
                 uuid_settings->setValue(
                     appGUID, uuid_settings->value(appGUID_4_0).toString());

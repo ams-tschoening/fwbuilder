@@ -30,9 +30,6 @@
 #include "FWBApplication.h"
 #include "RCS.h"
 
-// need this for FS_SEPARATOR
-#include "fwbuilder/Tools.h"
-
 //#include "FWWindow.h"
 
 #include <qdir.h>
@@ -201,7 +198,9 @@ RCSEnvFix::RCSEnvFix()
 
 #endif
 
-    TZOffset.sprintf("%02d:%02d",tzoffset/60,tzoffset%60);
+    TZOffset = QString("%1:%2")
+            .arg(tzoffset / 60, 2, 10, QChar('0'))
+            .arg(tzoffset % 60, 2, 10, QChar('0'));
     TZOffset = tzsign + TZOffset;
 
     if (fwbdebug)
@@ -423,7 +422,7 @@ RCS::RCS(const QString &file)
         }
         // sort list revisions; its defined like this:
         // QList<Revision> revisions
-        qSort(revisions);
+	std::sort(revisions.begin(), revisions.end());
 
         inrcs         = true;
         tracking_file = true;
@@ -774,7 +773,7 @@ bool RCS::co(const QString &rev,bool force)
                             app->activeWindow(),"Firewall Builder",
                             tr("File is opened and locked by %1.\nYou can only open it read-only.")
                             .arg(locked_by),
-                            "Open &read-only", "&Cancel", QString::null,
+                            "Open &read-only", "&Cancel", QString(),
                             0, 1 ) )
                 {
                 case 0:  ro=true;   return false;

@@ -11,7 +11,10 @@ RUN apt-get update && apt-get install -y \
     libxslt1-dev \
     make \
     nsis \
-    qbs \
-    qt5-default
+    cmake \
+    git \
+    qt5-default \
+    ccache
 
-WORKDIR /root
+WORKDIR /
+CMD ["bash"]

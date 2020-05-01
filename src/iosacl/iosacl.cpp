@@ -45,6 +45,7 @@
 #include <assert.h>
 #include <cstring>
 
+#include "version.h"
 #include "CompilerDriver_iosacl.h"
 
 #include "fwbuilder/Resources.h"
@@ -54,7 +55,7 @@
 #include "fwbuilder/Tools.h"
 #include "fwbuilder/Constants.h"
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QStringList>
 #include <QTextCodec>
 
@@ -88,7 +89,7 @@ void usage(const char *name)
 
 int main(int argc, char **argv)
 {   
-    QApplication app(argc, argv, false);
+    QCoreApplication app(argc, argv, false);
 
     // compilers always write file names into manifest in Utf8
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));

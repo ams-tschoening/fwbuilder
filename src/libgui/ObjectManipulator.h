@@ -206,6 +206,7 @@ public slots:
      void selectionChanged(QTreeWidgetItem *cur);
 
      void removeUserFolder();
+     void renameUserFolder();
      void moveItems(ObjectTreeViewItem *dest,
                     const std::list<libfwbuilder::FWObject *> &items);
 
@@ -322,8 +323,6 @@ public:
                      const std::string &objtype,
                      const std::string &namesuffix);
      void autorenameVlans(std::list<libfwbuilder::FWObject*> &obj_list);
-
-     std::string getFolderNameString(libfwbuilder::FWObject *obj);
 
      void reload();
 
@@ -494,8 +493,6 @@ public:
      void addSubfolderActions(QList<QAction*> &AddObjectActions, libfwbuilder::FWObject *currentObj, ObjectTreeViewItem *item, bool &addSubfolder);
 signals:
      void libraryAccessChanged(bool writable);
-
-
 };
 
 #endif

@@ -2,6 +2,8 @@
 
 set -e -x
 
-qbs setup-toolchains --detect
-qbs setup-qt $(which qmake) qt
-qbs debug profile:qt
+mkdir -p /fwbuilder/build
+cd /fwbuilder/build
+cmake .. -DCMAKE_BUILD_TYPE=Debug
+make -j$(nproc)
+make install
