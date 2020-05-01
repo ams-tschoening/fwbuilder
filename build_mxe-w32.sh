@@ -1,5 +1,5 @@
 #!/bin/bash
-export PATH=/opt/mxe/usr/bin:$PATH
+export PATH=/usr/lib/mxe/usr/bin:$PATH
 
 main()
 {
@@ -46,8 +46,8 @@ usage()
 configure()
 {
     echo "==> Configuring"
-    qbs setup-toolchains /opt/mxe/usr/bin/i686-w64-mingw32.shared-g++ mingw32
-    qbs setup-qt /opt/mxe/usr/i686-w64-mingw32.shared/qt5/bin/qmake qt
+    qbs setup-toolchains /usr/lib/mxe/usr/bin/i686-w64-mingw32.shared-g++ mingw32
+    qbs setup-qt /usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/bin/qmake qt
     if [ $? -eq 0 ]; then
         echo "==> Done configuring"
     else
