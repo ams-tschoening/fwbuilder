@@ -29,8 +29,10 @@ Module {
         property stringList compilerFlags
         property stringList linkerFlags
         property string modversion
-        
+
         configure: {
+            return
+
             var p = new Process()
             try {
                 if (p.exec(executable, ['--version']) === 0) {
